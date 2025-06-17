@@ -26,8 +26,8 @@ def seir_model(alpha, beta, gamma):
 
         s, e, i, _ = x
 
-        ds = -beta * s * i
-        de = beta * s * i - alpha * e
+        ds = -beta(t) * s * i
+        de = beta(t) * s * i - alpha * e
         di = alpha * e - gamma * i
         dr = gamma * i
 
@@ -37,23 +37,32 @@ def seir_model(alpha, beta, gamma):
 
     return f
 
-def seir_simulation():
-    # Reproduction number R0: if R0 > 1, the pandemic starts, if R0 < 1, it ceases
-    r0 = 2
+def beta_modulator(beta, amplitude, phi, period):
+    def f(t):
+        return beta * (1 + amplitude * np.sin(2 * np.pi * (t + phi) / period))
 
-    alpha = 1/5; gamma = 1/10; beta = r0 * gamma
+    return f
+
+def seir_simulation():
+    r0 = 2
+    alpha = 1/5
+    gamma = 1/10
+    beta = beta_modulator(r0 * gamma, 1, 365 / 4, 365)
 
     f = seir_model(alpha, beta, gamma)
 
-    s = 0.999; e = 1 - s; i = 0; r = 0
+    s = 0.999
+    e = 1 - s
+    i = 0
+    r = 0
     x0 = np.array([s, e, i, r])
 
-    t = 365
+    t = 1 * 365
     h = 1
 
     result = euler_method(f, x0, t, h)
-
     t, x = zip(*result)
+
     x = np.array(x)
     labels = ["s", "e", "i", "r"]
 
