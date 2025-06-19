@@ -28,7 +28,7 @@ def seir_model(alpha, beta, gamma, epsilon=0, delta=0, ny=0, my=0):
     def f(t, x):
         n, s, e, i, r, _, _, _, _, _, _ = x
 
-        dn = (ny - my) * n
+        dn = (ny - my) * n - epsilon * i
 
         ds = ny * n + delta * r - 1 / n * beta(t) * s * i - my * s
         de = 1 / n  * beta(t) * s * i - alpha * e - my * e
@@ -121,6 +121,7 @@ def seir_simulation():
     ax3.set_title("Cumulative cases for SEIRD compartments")
     ax3.set_xlabel("Day")
     ax3.set_ylabel("Amount")
+    ax3.set_yscale("log")
 
     ax3.plot(t, c_s, label="Susceptible", color="blue")
     ax3.plot(t, c_e, label="Exposed", color="orange")
@@ -159,8 +160,6 @@ def seir_simulation():
 
     ax5.legend()
     ax5_twin.legend(loc="lower right")
-
-    print(i[0:5], e[0:5]),
 
     plt.show()
 
