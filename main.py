@@ -59,7 +59,7 @@ def seir_simulation():
 
     alpha = 1 / 5
     gamma = 1 / 10
-    beta = beta_modulator(beta=r0 * gamma)
+    beta = beta_modulator(beta=r0 * gamma, amplitude=0.1)
     delta = 1 / 365
     epsilon = 1 / 10000
     ny = 0
@@ -77,7 +77,7 @@ def seir_simulation():
 
     x0 = np.array([n, s, e, i, r, d, c_s, c_e, c_i, c_r, c_d])
 
-    t = 1 * 365
+    t = 10 * 365
     h = 1
 
     result = euler_method(f, x0, t, h)
@@ -135,11 +135,11 @@ def seir_simulation():
     ax4.set_xlabel("Day")
     ax4.set_ylabel("Rate")
 
-    ax4.axhline(alpha, label="Alpha", color="red")
+    ax4.plot(t, np.full(len(t), alpha), label="Alpha", color="red")
     ax4.plot(t, beta(np.array(t)), label="Beta", color="orange")
-    ax4.axhline(gamma, label="Gamma", color="green")
-    ax4.axhline(delta, label="Delta", color="blue")
-    ax4.axhline(epsilon, label="Epsilon", color="grey")
+    ax4.plot(t, np.full(len(t), gamma), label="Gamma", color="green")
+    ax4.plot(t, np.full(len(t), delta), label="Delta", color="blue")
+    ax4.plot(t, np.full(len(t), epsilon), label="Epsilon", color="grey")
 
     ax4.legend()
 
@@ -151,8 +151,8 @@ def seir_simulation():
 
     ax5_twin = ax5.twinx()
     ax5_twin.set_ylabel("Rate")
-    ax5_twin.axhline(ny, linestyle=":", label="Ny", color="blue")
-    ax5_twin.axhline(my, linestyle=":", label="My", color="brown")
+    ax5_twin.plot(t, np.full(len(t), ny), linestyle=":", label="Ny", color="blue")
+    ax5_twin.plot(t, np.full(len(t), my), linestyle=":", label="My", color="brown")
 
     ax5_twin.tick_params(axis="y", labelcolor="brown")
     ax5_twin.set_ylim(bottom=0, top=0.01)
