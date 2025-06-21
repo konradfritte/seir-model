@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+# Move to separate file
+
 # Approximates a function's values using the euler method: f(t + h) = f(t) + h * f'(t).
 # f: The function that should be approximated
 # x0: The initial value at which to start
@@ -16,6 +18,8 @@ def euler_method(f, x0, t, h):
 
         result.append([t, x])
     return result
+
+# Move to separate file
 
 # Initializes the SEIR Model with its relevant parameters.
 # Alpha: Determines the transition rate from exposed to infectious compartment. Its reciprocal 1/alpha is the incubation time in days.
@@ -68,9 +72,9 @@ def healthcare_limit(parameter, limit, magnitude=1):
 def seir_simulation():
     alpha = 1 / 5
     gamma = 1 / 10
-    beta = seasonality(1/7, amplitude=0.5)
-    delta = 1 / 365
-    epsilon = healthcare_limit(1 / 100, limit=25000, magnitude=5)
+    beta = seasonality(1.5 / 10, amplitude=0.1)
+    delta = 1/365
+    epsilon = healthcare_limit(1 / 100, limit=25000, magnitude=2)
     zeta = 1 / 1000
     eta = 1 / 20
     ny = 0
@@ -89,7 +93,7 @@ def seir_simulation():
 
     x0 = np.array([n, s, e, i, ih, r, d, c_s, c_e, c_i, c_ih, c_r, c_d])
 
-    t = 1 * 365
+    t = 5 * 365
     h = 1
 
     result = euler_method(f, x0, t, h)
@@ -102,6 +106,8 @@ def seir_simulation():
     dc_ih = np.diff(c_ih)
     dc_r = np.diff(c_r)
     dc_d = np.diff(c_d)
+
+    # Move to separate file
 
     plt.style.use("ggplot")
 
@@ -118,8 +124,6 @@ def seir_simulation():
     ax1.plot(t, r, label="Recovered", color="green")
     ax1.plot(t, d, label="Dead", color="grey")
 
-    ax1.legend()
-
     ax2.set_title("New daily cases for SEIRD compartments")
     ax2.set_xlabel("Day")
     ax2.set_ylabel("Amount")
@@ -131,7 +135,7 @@ def seir_simulation():
     ax2.plot(dc_r, label="Recovered", color="green")
     ax2.plot(dc_d, label="Dead", color="grey")
 
-    ax2.legend()
+    ax2.legend(loc="upper right")
 
     ax3.set_title("Cumulative cases for SEIRD compartments")
     ax3.set_xlabel("Day")
@@ -145,21 +149,30 @@ def seir_simulation():
     ax3.plot(t, c_r, label="Recovered", color="green")
     ax3.plot(t, c_d, label="Dead", color="grey")
 
-    ax3.legend()
+    ax3.legend(loc="upper right")
 
-    ax4.set_title("Transition rates for SEIRD compartments")
+    # Basic Reproduction Number R0 with demographic parameters
+    r0 = s[0]/n * alpha * beta(t[0]) / ((alpha + ny) * (gamma + zeta + ny))
+    # Effective Reproduction Number Rq with demographic parameters
+    rq = s / np.array(n) * alpha * beta(np.array(t)) / ((alpha + ny ) * (gamma + zeta + ny))
+
+    ax4.set_title("Reproduction Coefficients")
     ax4.set_xlabel("Day")
     ax4.set_ylabel("Rate")
 
-    ax4.plot(t, np.full(len(t), alpha), label="Alpha", color="red")
-    ax4.plot(t, beta(np.array(t)), label="Beta", color="orange")
-    ax4.plot(t, np.full(len(t), gamma), label="Gamma", color="green")
-    ax4.plot(t, np.full(len(t), delta), label="Delta", color="blue")
-    ax4.plot(t, np.full(len(t), zeta), label="Zeta", color="brown")
-    ax4.plot(t, np.full(len(t), eta), label="Eta", color="darkgreen")
-    ax4.plot(t, np.vectorize(epsilon)(ih), label="Epsilon", color="grey")
+    ax4.plot(np.full(len(t), r0), label="Basic Reproduction Number", color="gray")
+    ax4.plot(rq, label="Effective Reproduction Number", color="orange")
+    ax4.plot(t, beta(np.array(t)), linestyle=":", label="Contact Rate", color="orange")
+    ax4.axhline(1, linestyle="--", label="Balanced State", color="black")
 
-    ax4.legend()
+    ax4_twin = ax4.twinx()
+    ax4_twin.fill_between(t[1:], dc_e, linestyle=":", label="Daily Infections", color="grey", alpha=0.3)
+    ax4_twin.grid(False)
+
+    ax4_handles, ax4_labels = ax4.get_legend_handles_labels()
+    ax4_twin_handles, ax4_twin_labels = ax4_twin.get_legend_handles_labels()
+
+    ax4.legend(ax4_handles + ax4_twin_handles, ax4_labels + ax4_twin_labels, loc="upper right")
 
     ax5.set_title("Development of total population")
     ax5.set_xlabel("Day")
@@ -167,26 +180,26 @@ def seir_simulation():
 
     ax5.plot(t, n, label="Population", color="grey")
 
-    ax5.legend()
+    ax5.legend(loc="upper right")
 
     ax6.set_title("Healthcare System Load")
     ax6.set_xlabel("Day")
     ax6.set_ylabel("Amount")
 
-    ax6.plot(t, c_d, label="Cumulative death cases", color="grey")
+    ax6.fill_between(t, c_d, label="Cumulative death cases", color="grey", alpha=0.3)
 
     ax6_twin = ax6.twinx()
     ax6_twin.set_ylabel("Amount")
-    ax6_twin.plot(t, ih, linestyle=":", label="Hospitalized", color="brown")
-    ax6_twin.axhline(25000, label="Healthcare Limit")
-
+    ax6_twin.plot(t, ih, label="Hospitalized", color="brown")
+    ax6_twin.axhline(25000, linestyle="--", label="Healthcare Limit", color="black")
     ax6_twin.grid(False)
 
-    ax6.legend()
-    ax6_twin.legend()
+    ax6_handles, ax6_labels = ax6.get_legend_handles_labels()
+    ax6_twin_handles, ax6_twin_labels = ax6_twin.get_legend_handles_labels()
 
-    print(c_d[-1], int(n[0]- c_d[-1] - n[-1]),)
+    ax6.legend(ax6_handles + ax6_twin_handles, ax6_labels + ax6_twin_labels, loc="upper right")
 
+    print(np.argmax(rq))
 
     plt.show()
 
