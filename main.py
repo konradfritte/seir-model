@@ -63,18 +63,19 @@ def seasonality(parameter, amplitude=0, phi=0, period=365):
 
     return f
 
-def healthcare_limit(parameter, limit, magnitude=1):
+def mortality(parameter, limit, magnitude=1):
     def f(x):
         return parameter if x <= limit else magnitude * parameter
 
     return f
 
 def seir_simulation():
+    healthcare_limit = 25000
     alpha = 1 / 5
     gamma = 1 / 10
     beta = seasonality(1.5 / 10, amplitude=0.1)
     delta = 1/365
-    epsilon = healthcare_limit(1 / 100, limit=25000, magnitude=2)
+    epsilon = mortality(1 / 100, limit=healthcare_limit, magnitude=2)
     zeta = 1 / 1000
     eta = 1 / 20
     ny = 0
@@ -85,8 +86,7 @@ def seir_simulation():
     n = 83200000
     s = n - 10000
     e = n - s
-    ih = 0
-    i = r = d = 0
+    ih = i = r = d = 0
     c_s = s
     c_e = e
     c_i = c_ih = c_r = c_d = 0
@@ -96,16 +96,30 @@ def seir_simulation():
     t = 5 * 365
     h = 1
 
-    result = euler_method(f, x0, t, h)
-    t, x = zip(*result)
-    n, s, e, i, ih, r, d, c_s, c_e, c_i, c_ih, c_r, c_d = zip(*x)
+    results = euler_method(f, x0, t, h)
 
-    dc_s = np.diff(c_s)
-    dc_e = np.diff(c_e)
-    dc_i = np.diff(c_i)
-    dc_ih = np.diff(c_ih)
-    dc_r = np.diff(c_r)
-    dc_d = np.diff(c_d)
+    return {
+        "parameters": {
+            "healthcare_limit": healthcare_limit,
+            "alpha": alpha,
+            "gamma": gamma,
+            "beta": beta,
+            "delta": delta,
+            "epsilon": epsilon,
+            "zeta": zeta,
+            "eta": eta,
+            "ny": ny,
+            "my": my
+        },
+        "results": results
+    }
+
+def diagram(data):
+    healthcare_limit, alpha, gamma, beta, delta, epsilon, zeta, eta, ny, my = data["parameters"].values()
+
+    t, x = zip(*data["results"])
+
+    n, s, e, i, ih, r, d, c_s, c_e, c_i, c_ih, c_r, c_d = zip(*x)
 
     # Move to separate file
 
@@ -127,6 +141,8 @@ def seir_simulation():
     ax2.set_title("New daily cases for SEIRD compartments")
     ax2.set_xlabel("Day")
     ax2.set_ylabel("Amount")
+
+    dc_s, dc_e, dc_i, dc_ih, dc_r, dc_d = np.diff([c_s, c_e, c_i, c_ih, c_r, c_d])
 
     ax2.plot(dc_s, label="Susceptible", color="blue")
     ax2.plot(dc_e, label="Exposed", color="orange")
@@ -191,7 +207,7 @@ def seir_simulation():
     ax6_twin = ax6.twinx()
     ax6_twin.set_ylabel("Amount")
     ax6_twin.plot(t, ih, label="Hospitalized", color="brown")
-    ax6_twin.axhline(25000, linestyle="--", label="Healthcare Limit", color="black")
+    ax6_twin.axhline(healthcare_limit, linestyle="--", label="Healthcare Limit", color="black")
     ax6_twin.grid(False)
 
     ax6_handles, ax6_labels = ax6.get_legend_handles_labels()
@@ -203,5 +219,4 @@ def seir_simulation():
 
     plt.show()
 
-
-seir_simulation()
+diagram(seir_simulation())
