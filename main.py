@@ -21,25 +21,13 @@ def euler_method(f, x0, t, h):
         result.append([t, x])
     return result
 
-def seasonality(parameter, amplitude=0, phi=0, period=365):
-    def f(t):
-        return parameter * (1 + amplitude * np.sin(2 * np.pi * (t + phi) / period))
-
-    return f
-
-def mortality(parameter, limit, magnitude=1):
-    def f(x):
-        return parameter if x <= limit else magnitude * parameter
-
-    return f
-
 def seir_simulation():
     healthcare_limit = 25000
     alpha = 1 / 5
     gamma = 1 / 10
-    beta = seasonality(1.5 / 10, amplitude=0.1)
+    beta = model.seasonal_contact_rate(1.5 / 10, amplitude=0.1)
     delta = 1/365
-    epsilon = mortality(1 / 100, limit=healthcare_limit, magnitude=2)
+    epsilon = model.dynamic_mortality(1 / 100, limit=healthcare_limit, magnitude=2)
     zeta = 1 / 1000
     eta = 1 / 20
     ny = 0

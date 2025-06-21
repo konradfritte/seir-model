@@ -35,3 +35,15 @@ def initialize_seir_model(alpha, beta, gamma, delta=0, zeta=0, eta=0, epsilon=0,
         return dx
 
     return f
+
+def seasonal_contact_rate(parameter, amplitude=0, phi=0, period=365):
+    def f(t):
+        return parameter * (1 + amplitude * np.sin(2 * np.pi * (t + phi) / period))
+
+    return f
+
+def dynamic_mortality(parameter, limit, magnitude=1):
+    def f(x):
+        return parameter if x <= limit else magnitude * parameter
+
+    return f
