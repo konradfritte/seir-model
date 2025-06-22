@@ -10,7 +10,7 @@ import numpy as np
 # Epsilon: Determines the transition rate from hospitalized to dead compartment. Its reciprocal 1/epsilon is the decease time in days.
 # Ny: Determines the natural birth rate for the total population.
 # My: Determines the natural death rate for the total population.
-def seihrsd_model(alpha, beta, gamma, delta, zeta, eta, epsilon, ny=0, my=0):
+def seihrsd_model(alpha, beta, gamma, delta, zeta, eta, epsilon, ny, my):
     def f(t, x):
         n, s, e, i, ih, r, _, _, _, _, _, _, _ = x
 

@@ -11,9 +11,57 @@ def seihrsd_simulation():
     beta = model.beta_moderator(2 / 10)
     gamma = model.gamma_moderator(1 / 10)
     delta = model.delta_moderator(1/365)
-    epsilon = model.epsilon_moderator(1/100, limit=healthcare_limit)
+    epsilon = model.epsilon_moderator(1/100, limit=healthcare_limit, magnitude=5)
     zeta = model.zeta_moderator(1/1000)
-    eta = model.eta_moderator(1 / 20)
+    eta = model.eta_moderator(1/20)
+
+    ny=0
+    my=0
+
+    f = model.seihrsd_model(alpha=alpha, beta=beta, gamma=gamma, delta=delta, epsilon=epsilon, zeta=zeta, eta=eta, ny=ny, my=my)
+
+    n = 83200000
+    s = n - 10000
+    e = n - s
+    ih = i = r = d = 0
+    c_s = s
+    c_e = e
+    c_i = c_ih = c_r = c_d = 0
+
+    x0 = np.array([n, s, e, i, ih, r, d, c_s, c_e, c_i, c_ih, c_r, c_d])
+
+    t = 5 * 365
+    h = 1
+
+    results = euler_method(f, x0, t, h)
+
+    return {
+        "parameters": {
+            "healthcare_limit": healthcare_limit,
+            "alpha": alpha,
+            "gamma": gamma,
+            "beta": beta,
+            "delta": delta,
+            "epsilon": epsilon,
+            "zeta": zeta,
+            "eta": eta,
+            "ny": ny,
+            "my": my
+        },
+        "results": results
+    }
+
+
+def seirsd_simulation():
+    healthcare_limit = 0
+
+    alpha = model.alpha_moderator(1 / 5)
+    beta = model.beta_moderator(2 / 10)
+    gamma = model.gamma_moderator(1 / 10)
+    delta = model.delta_moderator(1/365)
+    epsilon = model.epsilon_moderator(1)
+    zeta = model.zeta_moderator(1/100000)
+    eta = model.eta_moderator(0)
     ny = 0
     my = 0
 
