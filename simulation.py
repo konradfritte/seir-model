@@ -3,19 +3,21 @@ import numpy as np
 import model
 
 # TODO:: Create different simulations with different parameters
-def seir_simulation():
+
+def seihrsd_simulation():
     healthcare_limit = 25000
-    alpha = 1 / 5
-    gamma = 1 / 10
-    beta = model.seasonal_contact_rate(1.5 / 10, amplitude=0.1)
-    delta = 1/365
-    epsilon = model.dynamic_mortality(1 / 100, limit=healthcare_limit, magnitude=2)
-    zeta = 1 / 1000
-    eta = 1 / 20
+
+    alpha = model.alpha_moderator(1 / 5)
+    beta = model.beta_moderator(2 / 10)
+    gamma = model.gamma_moderator(1 / 10)
+    delta = model.delta_moderator(1/365)
+    epsilon = model.epsilon_moderator(1/100, limit=healthcare_limit)
+    zeta = model.zeta_moderator(1/1000)
+    eta = model.eta_moderator(1 / 20)
     ny = 0
     my = 0
 
-    f = model.initialize_seir_model(alpha=alpha, beta=beta, gamma=gamma, delta=delta, epsilon=epsilon, zeta=zeta, eta=eta, ny=ny, my=my)
+    f = model.seihrsd_model(alpha=alpha, beta=beta, gamma=gamma, delta=delta, epsilon=epsilon, zeta=zeta, eta=eta, ny=ny, my=my)
 
     n = 83200000
     s = n - 10000

@@ -2,4 +2,4 @@
 import simulation
 import visualization
 
-visualization.diagram(simulation.seir_simulation())
+visualization.plot_simulation(simulation.seihrsd_simulation())

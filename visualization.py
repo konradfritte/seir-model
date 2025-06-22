@@ -1,20 +1,18 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def diagram(data):
+plt.style.use("ggplot")
+
+def plot_simulation(data):
     healthcare_limit, alpha, gamma, beta, delta, epsilon, zeta, eta, ny, my = data["parameters"].values()
 
     t, x = zip(*data["results"])
 
     n, s, e, i, ih, r, d, c_s, c_e, c_i, c_ih, c_r, c_d = zip(*x)
 
-    # Move to separate file
-
-    plt.style.use("ggplot")
-
     fig, ((ax1, ax2, ax3), (ax4, ax5, ax6)) = plt.subplots(2, 3)
 
-    ax1.set_title("Development of SEIRD compartments")
+    ax1.set_title("Development of SEIHRD compartments")
     ax1.set_xlabel("Day")
     ax1.set_ylabel("Amount")
 
@@ -25,7 +23,7 @@ def diagram(data):
     ax1.plot(t, r, label="Recovered", color="green")
     ax1.plot(t, d, label="Dead", color="grey")
 
-    ax2.set_title("New daily cases for SEIRD compartments")
+    ax2.set_title("New daily cases for SEIHRD compartments")
     ax2.set_xlabel("Day")
     ax2.set_ylabel("Amount")
 
@@ -40,7 +38,7 @@ def diagram(data):
 
     ax2.legend(loc="upper right")
 
-    ax3.set_title("Cumulative cases for SEIRD compartments")
+    ax3.set_title("Cumulative cases for SEIHRD compartments")
     ax3.set_xlabel("Day")
     ax3.set_ylabel("Amount")
     ax3.set_yscale("log")
@@ -55,9 +53,9 @@ def diagram(data):
     ax3.legend(loc="upper right")
 
     # Basic Reproduction Number R0 with demographic parameters
-    r0 = s[0]/n * alpha * beta(t[0]) / ((alpha + ny) * (gamma + zeta + ny))
+    r0 = alpha() * beta(t[0]) / ((alpha() + ny) * (gamma() + zeta() + ny))
     # Effective Reproduction Number Rq with demographic parameters
-    rq = s / np.array(n) * alpha * beta(np.array(t)) / ((alpha + ny ) * (gamma + zeta + ny))
+    rq = s / np.array(n) * alpha() * beta(np.array(t)) / ((alpha() + ny ) * (gamma() + zeta() + ny))
 
     ax4.set_title("Reproduction Coefficients")
     ax4.set_xlabel("Day")
