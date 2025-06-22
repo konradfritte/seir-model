@@ -23,6 +23,8 @@ def plot_simulation(data):
     ax1.plot(t, r, label="Recovered", color="green")
     ax1.plot(t, d, label="Dead", color="grey")
 
+    ax1.legend(loc="upper right")
+
     ax2.set_title("New daily cases for SEIHRD compartments")
     ax2.set_xlabel("Day")
     ax2.set_ylabel("Amount")

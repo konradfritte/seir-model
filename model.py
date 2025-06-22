@@ -37,30 +37,48 @@ def seihrsd_model(alpha, beta, gamma, delta, epsilon, epsilon_h, zeta, eta, ny, 
 
     return f
 
-def alpha_moderator(parameter):
-    return basic_moderator(parameter)
+# Moderator function for the alpha model parameter
+# Alpha: The transition rate from exposed to infectious compartment
+def alpha_moderator(alpha):
+    return basic_moderator(alpha)
 
-def beta_moderator(parameter, amplitude=0, phi=0, period=365):
+# Moderator function for the beta model parameter
+# Beta: The transition rate from susceptible to exposed compartment
+# Amplitude: The amplitude by which beta should be modulated
+# Phi: The phase shift for the modulator
+# Period: The period of the modulator
+def beta_moderator(beta, amplitude=0, phi=0, period=365):
     def f(t=0,x=0):
-        return parameter * (1 + amplitude * np.sin(2 * np.pi * (t + phi) / period))
+        return beta * (1 + amplitude * np.sin(2 * np.pi * (t + phi) / period))
 
     return f
 
+# Moderator function for the gamma model parameter
+# Gamma: The transition rate from infectious to recovered compartment
 def gamma_moderator(parameter):
     return basic_moderator(parameter)
 
+# Moderator function for the delta model parameter
+# Delta: The transition rate from recovered to susceptible compartment
 def delta_moderator(parameter):
     return basic_moderator(parameter)
 
+# Moderator function for the epsilon model parameter
+# Epsilon: The transition rate from infectious/hospitalized to dead compartment
+# Limit: The threshold value at which the rate should be assigned a new value
 def epsilon_moderator(parameter, limit=0, magnitude=1):
     def f(t=0,x=0):
         return parameter if x <= limit else magnitude * parameter
 
     return f
 
+# Moderator function for the zeta model parameter
+# Zeta: The transition rate from infectious to hospitalized compartment
 def zeta_moderator(parameter):
     return basic_moderator(parameter)
 
+# Moderator function for the eta model parameter
+# Eta: The transition rate from hospitalized to recovered compartment
 def eta_moderator(parameter):
     return basic_moderator(parameter)
 
