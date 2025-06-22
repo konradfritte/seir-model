@@ -1,6 +1,7 @@
 import numpy as np
 
 import model
+import solver
 
 # TODO:: Create different simulations with different parameters
 
@@ -31,7 +32,7 @@ def seihrsd_simulation(duration=365):
 
     x0 = np.array([n, s, e, i, ih, r, d, c_s, c_e, c_i, c_ih, c_r, c_d])
 
-    results = euler_method(f, x0, duration)
+    results = solver.euler_method(f, x0, duration)
 
     return {
         "parameters": {
@@ -75,7 +76,7 @@ def seirsd_simulation(duration=365):
 
     x0 = np.array([n, s, e, i, ih, r, d, c_s, c_e, c_i, c_ih, c_r, c_d])
 
-    results = euler_method(f, x0, duration)
+    results = solver.euler_method(f, x0, duration)
 
     return {
         "parameters": {
@@ -92,19 +93,3 @@ def seirsd_simulation(duration=365):
         },
         "results": results
     }
-
-# Approximates a function's values using the euler method: f(t + h) = f(t) + h * f'(t).
-# f: The function that should be approximated
-# x0: The initial value at which to start
-# t: The final time point at which to end
-# h: The delta value at which the function should be approximated
-def euler_method(f, x0, t, h=1):
-    x = x0
-    result = [[0, x]]
-
-    for k in range(1, int(1 + t / h)):
-        t = k * h
-        x = x + h * f(t, x)
-
-        result.append([t, x])
-    return result
