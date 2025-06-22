@@ -24,6 +24,7 @@ def seihrsd_model(alpha, beta, gamma, delta, epsilon, epsilon_h, zeta, eta, ny, 
         dr = gamma() * i + eta() * ih - delta() * r - my * r
         dd = epsilon_h(ih) * ih + epsilon() * i
 
+        # Rates for cumulated cases
         dc_s = ny * n + delta() * r
         dc_e = 1 / n  * beta(t) * s * i
         dc_i = alpha() * e
