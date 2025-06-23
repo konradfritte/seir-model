@@ -5,24 +5,24 @@ import numpy as np
 # Beta: Determines the transition rate from susceptible to exposed compartment. It is usually connected to the reproduction number R0 and the recovery rate gamma.
 # Gamma: Determines the transition rate from infectious to recovered compartment. Its reciprocal 1/gamma is the recovery time in days.
 # Delta : Determines the transition rate from recovered to susceptible compartment. Its reciprocal 1/delta is the immunity time in days.
-# Epsilon: Determines the transition rate from hospitalized to dead compartment. Its reciprocal 1/epsilon is the decease time in days.
-# Epsilon H: Determines the transition rate from hospitalized to dead compartment. Its reciprocal 1/epsilon is the decease time in days.
+# Epsilon I: Determines the transition rate from infectious to dead compartment. Its reciprocal 1/epsilon_i is the decease time in days.
+# Epsilon H: Determines the transition rate from hospitalized to dead compartment. Its reciprocal 1/epsilon_h is the decease time in days.
 # Zeta: Determines the transition rate from infectious to hospitalized compartment. Its reciprocal 1/zeta is the transition time from mild to severe desease in days.
 # Eta: Determines the transition rate from hospitalized to recovered compartment. Its reciprocal 1/eta is the recovery time for a hospitalized patient.
 # Ny: Determines the natural birth rate for the total population.
 # My: Determines the natural death rate for the total population.
-def seihrsd_model(alpha, beta, gamma, delta, epsilon, epsilon_h, zeta, eta, ny, my):
+def seihrsd_model(alpha, beta, gamma, delta, epsilon_i, epsilon_h, zeta, eta, ny, my):
     def f(t, x):
         n, s, e, i, ih, r, _, _, _, _, _, _, _ = x
 
-        dn = (ny - my) * n - epsilon(t,ih) * ih - epsilon() * i
+        dn = (ny - my) * n - epsilon_i(t,ih) * ih - epsilon_i() * i
 
         ds = ny * n + delta() * r - 1 / n * beta(t) * s * i - my * s
         de = 1 / n  * beta(t) * s * i - alpha() * e - my * e
-        di = alpha() * e - gamma() * i - zeta() * i - epsilon() * i - my * i
+        di = alpha() * e - gamma() * i - zeta() * i - epsilon_i() * i - my * i
         dih = zeta() * i - eta() * ih - epsilon_h(t, ih) * ih - my * ih
         dr = gamma() * i + eta() * ih - delta() * r - my * r
-        dd = epsilon_h(ih) * ih + epsilon() * i
+        dd = epsilon_h(ih) * ih + epsilon_i() * i
 
         # Rates for cumulated cases
         dc_s = ny * n + delta() * r
@@ -30,7 +30,7 @@ def seihrsd_model(alpha, beta, gamma, delta, epsilon, epsilon_h, zeta, eta, ny, 
         dc_i = alpha() * e
         dc_ih = zeta() * i
         dc_r = eta() * ih + gamma() * i
-        dc_d = epsilon_h(t, ih) * ih + epsilon() * i
+        dc_d = epsilon_h(t, ih) * ih + epsilon_i() * i
 
         dx = np.array([dn, ds, de, di, dih, dr, dd, dc_s, dc_e, dc_i, dc_ih, dc_r, dc_d])
 
