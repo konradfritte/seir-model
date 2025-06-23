@@ -313,9 +313,9 @@ def seird(duration=365):
         "results": results
     }
 
-def seir_with_seasonality(duration=5*365):
+def seir_with_seasonality(duration=1*365):
     alpha = model.alpha_moderator(1 / 5)
-    beta = model.beta_moderator(2 / 10, amplitude=0.2, phi=-365/4)
+    beta = model.beta_moderator(2 / 10, amplitude=0.5, phi=365/2)
     gamma = model.gamma_moderator(1 / 10)
     delta = model.delta_moderator(0)
     epsilon_i = model.epsilon_moderator(0)
