@@ -356,7 +356,7 @@ def seir_with_seasonality(duration=5*365):
         "results": results
     }
 
-def seir_with_vitality_parameters(duration=365*40):
+def seir_with_vitality_parameters(duration=365*60):
     alpha = model.alpha_moderator(1 / 5)
     beta = model.beta_moderator(2 / 10)
     gamma = model.gamma_moderator(1 / 10)
@@ -366,8 +366,8 @@ def seir_with_vitality_parameters(duration=365*40):
     zeta = model.zeta_moderator(0)
     eta = model.eta_moderator(0)
 
-    ny = 1/365/40
-    my = 1/365/80
+    ny = 1/365/50
+    my = 1/365/50
 
     f = model.seihrsd_model(alpha=alpha, beta=beta, gamma=gamma, delta=delta, epsilon_i=epsilon_i, epsilon_h=epsilon_h, zeta=zeta, eta=eta, ny=ny, my=my)
 

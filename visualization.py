@@ -16,6 +16,7 @@ def plot_simulation(data):
     ax1.set_xlabel("Time (days)")
     ax1.set_ylabel("SEIHRD (n)")
 
+    ax1.plot(t, n, linestyle=":", label="Population", color="grey")
     ax1.plot(t, s, label="Susceptible", color="blue")
     ax1.plot(t, e, label="Exposed", color="orange")
     ax1.plot(t, i, label="Infectious", color="red")
@@ -70,7 +71,7 @@ def plot_simulation(data):
     ax4.tick_params(axis='y', colors='darkgoldenrod')
 
     ax4_twin = ax4.twinx()
-    ax4_twin.fill_between(t[1:], dc_e, linestyle=":", label="Daily Infections", color="grey", alpha=0.3)
+    ax4_twin.fill_between(t[1:], dc_e, label="Daily Infections", color="grey", alpha=0.2)
     ax4_twin.grid(False)
 
 
