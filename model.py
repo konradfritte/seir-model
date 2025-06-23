@@ -17,11 +17,11 @@ def seihrsd_model(alpha, beta, gamma, delta, epsilon_i, epsilon_h, zeta, eta, ny
 
         dn = (ny - my) * n - epsilon_i(t,h) * h - epsilon_i() * i
 
-        ds = ny * n + delta() * r - 1 / n * beta(t) * s * i - my * s
-        de = 1 / n  * beta(t) * s * i - alpha() * e - my * e
-        di = alpha() * e - gamma() * i - zeta() * i - epsilon_i() * i - my * i
-        dh = zeta() * i - eta() * h - epsilon_h(t, h) * h - my * h
-        dr = gamma() * i + eta() * h - delta() * r - my * r
+        ds = ny * n + delta() * r - (1 / n * beta(t) * i + my) * s
+        de = 1 / n  * beta(t) * s * i - (alpha() + my) * e
+        di = alpha() * e - (gamma() + zeta() + epsilon_i() + my) * i
+        dh = zeta() * i - (eta() + epsilon_h(t, h) + my) * h
+        dr = gamma() * i + eta() * h - (delta() + my) * r
         dd = epsilon_h(h) * h + epsilon_i() * i
 
         # Rates for cumulated cases
