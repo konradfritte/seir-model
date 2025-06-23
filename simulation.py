@@ -23,12 +23,12 @@ def measles(duration=365):
     n = 83200000
     s = n - 10000
     e = n - s
-    ih = i = r = d = 0
+    h = i = r = d = 0
     c_s = s
     c_e = e
-    c_i = c_ih = c_r = c_d = 0
+    c_i = c_h = c_r = c_d = 0
 
-    x0 = np.array([n, s, e, i, ih, r, d, c_s, c_e, c_i, c_ih, c_r, c_d])
+    x0 = np.array([n, s, e, i, h, r, d, c_s, c_e, c_i, c_h, c_r, c_d])
 
     results = solver.euler_method(f, x0, duration)
 
@@ -69,12 +69,12 @@ def influenza(duration=365):
     n = 83200000
     s = n - 10000
     e = n - s
-    ih = i = r = d = 0
+    h= i = r = d = 0
     c_s = s
     c_e = e
-    c_i = c_ih = c_r = c_d = 0
+    c_i = c_h = c_r = c_d = 0
 
-    x0 = np.array([n, s, e, i, ih, r, d, c_s, c_e, c_i, c_ih, c_r, c_d])
+    x0 = np.array([n, s, e, i, h, r, d, c_s, c_e, c_i, c_h, c_r, c_d])
 
     results = solver.euler_method(f, x0, duration)
 
@@ -114,12 +114,12 @@ def covid(duration=365):
     n = 83200000
     s = n - 10000
     e = n - s
-    ih = i = r = d = 0
+    h= i = r = d = 0
     c_s = s
     c_e = e
-    c_i = c_ih = c_r = c_d = 0
+    c_i = c_h = c_r = c_d = 0
 
-    x0 = np.array([n, s, e, i, ih, r, d, c_s, c_e, c_i, c_ih, c_r, c_d])
+    x0 = np.array([n, s, e, i, h, r, d, c_s, c_e, c_i, c_h, c_r, c_d])
 
     results = solver.euler_method(f, x0, duration)
 
@@ -159,12 +159,12 @@ def seihrsd(duration=365):
     n = 83200000
     s = n - 10000
     e = n - s
-    ih = i = r = d = 0
+    h= i = r = d = 0
     c_s = s
     c_e = e
-    c_i = c_ih = c_r = c_d = 0
+    c_i = c_h = c_r = c_d = 0
 
-    x0 = np.array([n, s, e, i, ih, r, d, c_s, c_e, c_i, c_ih, c_r, c_d])
+    x0 = np.array([n, s, e, i, h, r, d, c_s, c_e, c_i, c_h, c_r, c_d])
 
     results = solver.euler_method(f, x0, duration)
 
@@ -202,12 +202,12 @@ def seirsd_with_seasonality(duration=5*365):
     n = 83200000
     s = n - 10000
     e = n - s
-    ih = i = r = d = 0
+    h= i = r = d = 0
     c_s = s
     c_e = e
-    c_i = c_ih = c_r = c_d = 0
+    c_i = c_h = c_r = c_d = 0
 
-    x0 = np.array([n, s, e, i, ih, r, d, c_s, c_e, c_i, c_ih, c_r, c_d])
+    x0 = np.array([n, s, e, i, h, r, d, c_s, c_e, c_i, c_h, c_r, c_d])
 
     results = solver.euler_method(f, x0, duration)
 
@@ -245,12 +245,12 @@ def seirsd(duration=5*365):
     n = 83200000
     s = n - 10000
     e = n - s
-    ih = i = r = d = 0
+    h= i = r = d = 0
     c_s = s
     c_e = e
-    c_i = c_ih = c_r = c_d = 0
+    c_i = c_h = c_r = c_d = 0
 
-    x0 = np.array([n, s, e, i, ih, r, d, c_s, c_e, c_i, c_ih, c_r, c_d])
+    x0 = np.array([n, s, e, i, h, r, d, c_s, c_e, c_i, c_h, c_r, c_d])
 
     results = solver.euler_method(f, x0, duration)
 
@@ -288,12 +288,12 @@ def seird(duration=365):
     n = 83200000
     s = n - 10000
     e = n - s
-    ih = i = r = d = 0
+    h= i = r = d = 0
     c_s = s
     c_e = e
-    c_i = c_ih = c_r = c_d = 0
+    c_i = c_h = c_r = c_d = 0
 
-    x0 = np.array([n, s, e, i, ih, r, d, c_s, c_e, c_i, c_ih, c_r, c_d])
+    x0 = np.array([n, s, e, i, h, r, d, c_s, c_e, c_i, c_h, c_r, c_d])
 
     results = solver.euler_method(f, x0, duration)
 
@@ -331,12 +331,12 @@ def seir_with_seasonality(duration=5*365):
     n = 83200000
     s = n - 10000
     e = n - s
-    ih = i = r = d = 0
+    h= i = r = d = 0
     c_s = s
     c_e = e
-    c_i = c_ih = c_r = c_d = 0
+    c_i = c_h = c_r = c_d = 0
 
-    x0 = np.array([n, s, e, i, ih, r, d, c_s, c_e, c_i, c_ih, c_r, c_d])
+    x0 = np.array([n, s, e, i, h, r, d, c_s, c_e, c_i, c_h, c_r, c_d])
 
     results = solver.euler_method(f, x0, duration)
 
@@ -374,12 +374,12 @@ def seir_with_vitality_parameters(duration=365*40):
     n = 83200000
     s = n - 10000
     e = n - s
-    ih = i = r = d = 0
+    h= i = r = d = 0
     c_s = s
     c_e = e
-    c_i = c_ih = c_r = c_d = 0
+    c_i = c_h = c_r = c_d = 0
 
-    x0 = np.array([n, s, e, i, ih, r, d, c_s, c_e, c_i, c_ih, c_r, c_d])
+    x0 = np.array([n, s, e, i, h, r, d, c_s, c_e, c_i, c_h, c_r, c_d])
 
     results = solver.euler_method(f, x0, duration)
 
@@ -417,12 +417,12 @@ def seir(duration=365):
     n = 83200000
     s = n - 10000
     e = n - s
-    ih = i = r = d = 0
+    h= i = r = d = 0
     c_s = s
     c_e = e
-    c_i = c_ih = c_r = c_d = 0
+    c_i = c_h = c_r = c_d = 0
 
-    x0 = np.array([n, s, e, i, ih, r, d, c_s, c_e, c_i, c_ih, c_r, c_d])
+    x0 = np.array([n, s, e, i, h, r, d, c_s, c_e, c_i, c_h, c_r, c_d])
 
     results = solver.euler_method(f, x0, duration)
 

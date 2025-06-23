@@ -2,4 +2,4 @@
 import simulation
 import visualization
 
-visualization.plot_simulation(simulation.measles())
+visualization.plot_simulation(simulation.covid())

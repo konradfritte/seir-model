@@ -1,6 +1,6 @@
 import numpy as np
 
-# Initializes the SEIHRS-D Model.
+# Initializes the SEhRS-D Model.
 # Alpha: Determines the transition rate from exposed to infectious compartment. Its reciprocal 1/alpha is the incubation time in days.
 # Beta: Determines the transition rate from susceptible to exposed compartment. It is usually connected to the reproduction number R0 and the recovery rate gamma.
 # Gamma: Determines the transition rate from infectious to recovered compartment. Its reciprocal 1/gamma is the recovery time in days.
@@ -13,26 +13,26 @@ import numpy as np
 # My: Determines the natural death rate for the total population.
 def seihrsd_model(alpha, beta, gamma, delta, epsilon_i, epsilon_h, zeta, eta, ny, my):
     def f(t, x):
-        n, s, e, i, ih, r, _, _, _, _, _, _, _ = x
+        n, s, e, i, h, r, _, _, _, _, _, _, _ = x
 
-        dn = (ny - my) * n - epsilon_i(t,ih) * ih - epsilon_i() * i
+        dn = (ny - my) * n - epsilon_i(t,h) * h - epsilon_i() * i
 
         ds = ny * n + delta() * r - 1 / n * beta(t) * s * i - my * s
         de = 1 / n  * beta(t) * s * i - alpha() * e - my * e
         di = alpha() * e - gamma() * i - zeta() * i - epsilon_i() * i - my * i
-        dih = zeta() * i - eta() * ih - epsilon_h(t, ih) * ih - my * ih
-        dr = gamma() * i + eta() * ih - delta() * r - my * r
-        dd = epsilon_h(ih) * ih + epsilon_i() * i
+        dh = zeta() * i - eta() * h - epsilon_h(t, h) * h - my * h
+        dr = gamma() * i + eta() * h - delta() * r - my * r
+        dd = epsilon_h(h) * h + epsilon_i() * i
 
         # Rates for cumulated cases
         dc_s = ny * n + delta() * r
         dc_e = 1 / n  * beta(t) * s * i
         dc_i = alpha() * e
-        dc_ih = zeta() * i
-        dc_r = eta() * ih + gamma() * i
-        dc_d = epsilon_h(t, ih) * ih + epsilon_i() * i
+        dc_h = zeta() * i
+        dc_r = eta() * h + gamma() * i
+        dc_d = epsilon_h(t, h) * h + epsilon_i() * i
 
-        dx = np.array([dn, ds, de, di, dih, dr, dd, dc_s, dc_e, dc_i, dc_ih, dc_r, dc_d])
+        dx = np.array([dn, ds, de, di, dh, dr, dd, dc_s, dc_e, dc_i, dc_h, dc_r, dc_d])
 
         return dx
 
